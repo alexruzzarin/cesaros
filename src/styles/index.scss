@@ -1,6 +1,52 @@
-@import "../../temp/_normalize.scss";
+@import "../../temp/_normalize";
+@import "../../temp/_sprite";
+
+$baseFontSize: 16px !default;
+
+@import "mixins/_functions";
+@import "mixins/_settings";
+@import "mixins/_sprite";
 
 html {
-  background: url(images/bg.jpg) no-repeat center center fixed;
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
   background-size: cover;
+
+  @media #{$small-only} {
+    background-image: url('/images/background/bg-01-small.jpg');
+  }
+
+  @media #{$medium-only} {
+    background-image: url('/images/background/bg-01-medium.jpg');
+  }
+
+  @media #{$large-only} {
+    background-image: url('/images/background/bg-01-large.jpg');
+  }
+
+  @media #{$xlarge-up} {
+    background-image: url('/images/background/bg-01-xlarge.jpg');
+  }
+
+}
+
+section {
+  background-color: rgba(255, 255, 255, .5);
+}
+
+
+.class {
+  &:before {
+    @include sprite(twitter);
+    content: '';
+    float: left;
+    margin-right: 0.5em;
+  }
+
+  &:hover {
+    &:before {
+      @include sprite(facebook, bg);
+    }
+  }
 }

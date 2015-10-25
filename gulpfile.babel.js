@@ -8,11 +8,16 @@ import david from 'gulp-david';
 import eslint from 'gulp-eslint';
 import htmlmin from 'gulp-htmlmin';
 import onlyif from 'gulp-if';
-import imagemin from 'gulp-imagemin';
+import minifyCss from 'gulp-minify-css';
 import rename from 'gulp-rename';
+import responsive from 'gulp-responsive';
 import sass from 'gulp-sass';
 import sourcemaps from 'gulp-sourcemaps';
+import svgmin from 'gulp-svgmin';
+import svgSprite from 'gulp-svg-sprite';
+import svg2png from 'gulp-svg2png';
 import uglify from 'gulp-uglify';
+import vinyl from 'vinyl';
 import yargs from 'yargs';
 import browserSync from 'browser-sync';
 
@@ -23,6 +28,7 @@ const source = {
     html: ['src/*.html'],
     styles: ['src/styles/*.scss'],
     images: ['src/images/**/*.*'],
+    icons: ['src/icons/svg/*.svg'],
 };
 
 const production = yargs.argv.production;
@@ -40,13 +46,13 @@ gulp.task('js', () => {
         .pipe(babel())
         .pipe(onlyif(production, uglify()))
         .pipe(onlyif(!production, sourcemaps.write()))
-        .pipe(gulp.dest("dist"))
+        .pipe(gulp.dest('dist'))
         .pipe(onlyif(!production, browserSync.reload({stream: true})));
 });
 
 gulp.task('html', () => {
     return gulp.src(source.html, {base: source.base})
-        .pipe(onlyif(!production, htmlmin({collapseWhitespace: true})))
+        .pipe(onlyif(production, htmlmin({collapseWhitespace: true})))
         .pipe(gulp.dest('dist'))
         .pipe(onlyif(!production, browserSync.reload({stream: true})));
 });
@@ -57,22 +63,126 @@ gulp.task('vendor-css', () => {
         .pipe(gulp.dest('./temp'));
 });
 
-gulp.task('css', ['vendor-css'], () => {
+gulp.task('icons-svg', () => {
+    const options = {
+        shape: {
+            spacing: {
+                padding: 5,
+            },
+        },
+        mode: {
+            css: {
+                dest: './',
+                layout: 'diagonal',
+                sprite: 'sprite.svg',
+                bust: false,
+                render: {
+                    scss: {
+                        dest: '_sprite.scss',
+                        template: 'src/icons/sprite-template.scss_tpl',
+                    },
+                },
+            },
+        },
+        variables: {
+            mapname: 'icons',
+        },
+    };
+    return gulp.src(source.icons)
+        .pipe(svgmin())
+        .pipe(svgSprite(options))
+        .pipe(gulp.dest('temp'));
+});
+
+gulp.task('icons-png', ['icons-svg'], () => {
+    return gulp.src('./temp/sprite.svg')
+        .pipe(svg2png())
+        .pipe(gulp.dest('temp'));
+});
+
+gulp.task('icons', ['icons-png'], () => {
+    return gulp.src('./temp/sprite.*')
+        .pipe(gulp.dest('./dist/images'));
+});
+
+gulp.task('css', ['vendor-css', 'icons'], () => {
     return gulp.src(source.styles, {base: source.base})
         .pipe(onlyif(!production, sourcemaps.init()))
         .pipe(sass().on('error', sass.logError))
+        .pipe(onlyif(production, minifyCss()))
         .pipe(onlyif(!production, sourcemaps.write()))
         .pipe(gulp.dest('dist'))
         .pipe(onlyif(!production, browserSync.stream()));
 });
 
 gulp.task('images', () => {
+    const config = {
+        '**/logo.png': [
+            {
+                width: 320,
+                withoutEnlargement: true,
+                rename: {
+                    suffix: '-small'
+                }
+            },
+            {
+                width: 512,
+                withoutEnlargement: true,
+                rename: {
+                    suffix: '-medium'
+                }
+            },
+            {
+                width: 720,
+                withoutEnlargement: true,
+                rename: {
+                    suffix: '-large'
+                }
+            },
+            {
+                width: 960,
+                withoutEnlargement: true,
+                rename: {
+                    suffix: '-xlarge'
+                }
+            }
+        ],
+        '**/background/bg-*.jpg': [
+            {
+                width: 640,
+                progressive: true,
+                rename: {
+                    suffix: '-small'
+                }
+            },
+            {
+                width: 1024,
+                progressive: true,
+                rename: {
+                    suffix: '-medium'
+                }
+            },
+            {
+                width: 1440,
+                progressive: true,
+                rename: {
+                    suffix: '-large'
+                }
+            },
+            {
+                width: 1920,
+                progressive: true,
+                rename: {
+                    suffix: '-xlarge'
+                }
+            }
+        ],
+    };
     const options = {
-        progressive: true,
-        interlaced: true,
+        errorOnEnlargement: true,
     };
     return gulp.src(source.images, {base: source.base})
-        .pipe(onlyif(!production, imagemin(options)))
+        .pipe(responsive(config, options))
         .pipe(gulp.dest('dist'))
         .pipe(onlyif(!production, browserSync.reload({stream: true})));
 });
@@ -84,7 +194,7 @@ gulp.task('watch', ['default'], ()=> {
 
     gulp.watch(source.js, ['js']);
     gulp.watch(source.html, ['html']);
-    gulp.watch(source.css, ['css']);
+    gulp.watch(source.styles, ['css']);
     gulp.watch(source.images, ['images']);
 });
 
