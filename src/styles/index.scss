@@ -1,7 +1,8 @@
 @import "../../temp/_normalize";
 @import "../../temp/_sprite";
 
-$baseFontSize: 16px !default;
+$textColor: #333;
+$bgColor: #ccc;
 
 @import "mixins/_functions";
 @import "mixins/_settings";
@@ -12,6 +13,7 @@ html {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: $bgColor;
 
   @media #{$small-only} {
     background-image: url('/images/background/bg-01-small.jpg');
@@ -31,22 +33,114 @@ html {
 
 }
 
-section {
-  background-color: rgba(255, 255, 255, .5);
+html, body {
+  color: $textColor;
 }
 
+a {
+  text-decoration: none;
+  color: $textColor;
 
-.class {
-  &:before {
-    @include sprite(twitter);
-    content: '';
-    float: left;
-    margin-right: 0.5em;
+  &:visited {
+    color: $textColor;
+  }
+}
+
+#main {
+  background-color: rgba(255, 255, 255, .5);
+  position: absolute;
+  bottom: 2em;
+  width: 100%;
+}
+
+header {
+  text-align: center;
+
+  h1 {
+    margin: .5em;
+
+    a, img, picture {
+      display: block;
+      width: 100%;
+    }
   }
 
-  &:hover {
+  h2 {
+    display: none;
+  }
+}
+
+footer {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.info {
+  display: flex;
+  margin: .5em 1em;
+  align-items: center;
+  text-align: justify;
+  width: 100%;
+
+  .icon {
+    margin-right: .6em;
+  }
+}
+
+.social {
+  display: flex;
+  justify-content: space-between;
+  margin: .5em 1em;
+  width: 100%;
+  .icon {
+    display: block;
+  }
+}
+
+@media #{$medium-up} {
+  #main {
+    display: flex;
+    align-items: center;
+    bottom: 4em;
+  }
+  header, footer {
+    width: 50%;
+  }
+  .info {
+    width: auto;
+  }
+}
+
+@media #{$large-up} {
+  #main {
+    bottom: 6em;
+  }
+  header {
+    width: 35%;
+  }
+  footer {
+    width: 65%;
+  }
+  .social {
+    .icon {
+      margin: auto 2em;
+    }
+  }
+}
+
+.icon {
+  span {
+    display: none;
+  }
+}
+
+$icons-key: map-keys($icons);
+@for $i from 2 through length($icons-key) {
+  $icon: nth($icons-key, $i);
+  .#{$icon} {
     &:before {
-      @include sprite(facebook, bg);
+      @include sprite($icon);
+      content: '';
     }
   }
 }
