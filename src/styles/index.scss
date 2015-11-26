@@ -15,20 +15,26 @@ html {
   background-size: cover;
   background-color: $bgColor;
 
-  @media #{$small-only} {
-    background-image: url('/images/background/bg-01-small.jpg');
-  }
+  transition: background-image 1s ease-in-out;
 
-  @media #{$medium-only} {
-    background-image: url('/images/background/bg-01-medium.jpg');
-  }
+  @for $i from 1 through 3 {
+    &.bg-#{$i} {
+      @media #{$small-only} {
+        background-image: url('/images/background/bg-0#{$i}-small.jpg');
+      }
 
-  @media #{$large-only} {
-    background-image: url('/images/background/bg-01-large.jpg');
-  }
+      @media #{$medium-only} {
+        background-image: url('/images/background/bg-0#{$i}-medium.jpg');
+      }
 
-  @media #{$xlarge-up} {
-    background-image: url('/images/background/bg-01-xlarge.jpg');
+      @media #{$large-only} {
+        background-image: url('/images/background/bg-0#{$i}-large.jpg');
+      }
+
+      @media #{$xlarge-up} {
+        background-image: url('/images/background/bg-0#{$i}-xlarge.jpg');
+      }
+    }
   }
 
 }
@@ -90,7 +96,7 @@ footer {
 .social {
   display: flex;
   justify-content: space-between;
-  margin: .5em 1em;
+  margin: .5em 0;
   width: 100%;
   .icon {
     display: block;

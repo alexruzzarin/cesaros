@@ -9,3 +9,22 @@
 ga('create', 'UA-69199222-1', 'auto');
 ga('require', 'linkid');
 ga('send', 'pageview');
+
+(function() {
+    var element = document.getElementById('site');
+    function changeBackground() {
+        var activeClass = element.classList[0];
+        if(activeClass){
+            var activeBg = Number(activeClass[3]);
+            var newBg = activeBg + 1;
+            if(newBg > 3) {
+                newBg = 1;
+            }
+            var newClass = 'bg-' + newBg;
+
+            element.classList.add(newClass);
+            element.classList.remove(activeClass);
+        }
+    }
+    var interval = setInterval(changeBackground, 10000);
+})();
