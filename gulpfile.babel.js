@@ -27,8 +27,10 @@ const source = {
     js: ['src/scripts/**/*.js'],
     html: ['src/*.html'],
     styles: ['src/styles/*.scss'],
-    images: ['src/images/**/*.*'],
+    images: ['src/images/**/*.*', '!src/images/favicon/**/*.*'],
+    staticImages: ['src/images/favicon/**/*.*'],
     icons: ['src/icons/svg/*.svg'],
+    staticFiles: ['src/browserconfig.xml', 'src/favicon.ico'],
 };
 
 const production = yargs.argv.production;
@@ -187,6 +189,18 @@ gulp.task('images', () => {
         .pipe(onlyif(!production, browserSync.reload({stream: true})));
 });
 
+gulp.task('staticImages', () => {
+    return gulp.src(source.staticImages, {base: source.base})
+        .pipe(gulp.dest('dist'))
+        .pipe(onlyif(!production, browserSync.reload({stream: true})));
+});
+
+gulp.task('staticFiles', () => {
+    return gulp.src(source.staticFiles, {base: source.base})
+        .pipe(gulp.dest('dist'))
+        .pipe(onlyif(!production, browserSync.reload({stream: true})));
+});
+
 gulp.task('watch', ['default'], ()=> {
     browserSync.init({
         server: './dist',
@@ -196,6 +210,8 @@ gulp.task('watch', ['default'], ()=> {
     gulp.watch(source.html, ['html']);
     gulp.watch(source.styles, ['css']);
     gulp.watch(source.images, ['images']);
+    gulp.watch(source.staticImages, ['staticImages']);
+    gulp.watch(source.staticFiles, ['staticFiles']);
 });
 
-gulp.task('default', ['pre', 'html', 'js', 'css', 'images']);
+gulp.task('default', ['pre', 'html', 'js', 'css', 'images', 'staticImages', 'staticFiles']);
