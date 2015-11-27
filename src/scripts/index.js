@@ -11,20 +11,20 @@ ga('require', 'linkid');
 ga('send', 'pageview');
 
 (function() {
-    var element = document.getElementById('site');
+    const element = document.getElementById('site');
     function changeBackground() {
-        var activeClass = element.classList[0];
+        const activeClass = element.classList[0];
         if(activeClass){
-            var activeBg = Number(activeClass[3]);
-            var newBg = activeBg + 1;
+            const activeBg = Number(activeClass[3]);
+            let newBg = activeBg + 1;
             if(newBg > 3) {
                 newBg = 1;
             }
-            var newClass = 'bg-' + newBg;
+            const newClass = 'bg-' + newBg;
 
             element.classList.add(newClass);
             element.classList.remove(activeClass);
         }
     }
-    var interval = setInterval(changeBackground, 10000);
+    const interval = setInterval(changeBackground, 10000);
 })();

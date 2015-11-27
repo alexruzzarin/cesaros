@@ -1,11 +1,9 @@
-@import "../../temp/_normalize";
-@import "../../temp/_sprite";
+@import "foundation";
+@include foundation-global-styles;
 
 $textColor: #333;
 $bgColor: #ccc;
-
-@import "mixins/_functions";
-@import "mixins/_settings";
+@import "../../temp/_sprite";
 @import "mixins/_sprite";
 
 html {
@@ -17,21 +15,23 @@ html {
 
   transition: background-image 1s ease-in-out;
 
+  overflow: hidden;
+
   @for $i from 1 through 3 {
     &.bg-#{$i} {
-      @media #{$small-only} {
+      @include breakpoint(small only) {
         background-image: url('/images/background/bg-0#{$i}-small.jpg');
       }
 
-      @media #{$medium-only} {
+      @include breakpoint(medium only) {
         background-image: url('/images/background/bg-0#{$i}-medium.jpg');
       }
 
-      @media #{$large-only} {
+      @include breakpoint(large only) {
         background-image: url('/images/background/bg-0#{$i}-large.jpg');
       }
 
-      @media #{$xlarge-up} {
+      @include breakpoint(xlarge only) {
         background-image: url('/images/background/bg-0#{$i}-xlarge.jpg');
       }
     }
@@ -52,14 +52,38 @@ a {
   }
 }
 
+#main, header > div, footer > div {
+  @include flex-grid-row;
+}
+
 #main {
   background-color: rgba(255, 255, 255, .5);
   position: absolute;
   bottom: 2em;
+  padding: rem-calc($grid-column-gutter)/2 0;
+  max-width: 100%;
   width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+
+header, footer {
+  @include flex-grid-column;
+
+  @include breakpoint(small) {
+    @include flex-grid-column(12);
+  }
+  @include breakpoint(medium) {
+    @include flex-grid-column(6);
+  }
 }
 
 header {
+  @include breakpoint(large) {
+    @include flex-grid-column(4);
+  }
+
   text-align: center;
 
   h1 {
@@ -77,60 +101,52 @@ header {
 }
 
 footer {
-  display: flex;
-  flex-flow: row wrap;
+  @include breakpoint(large) {
+    @include flex-grid-column(8);
+  }
 }
 
 .info {
-  display: flex;
-  margin: .5em 1em;
-  align-items: center;
-  text-align: justify;
-  width: 100%;
+  @include flex-grid-row(nest);
+
+  @include breakpoint(small) {
+    @include flex-grid-column(12);
+  }
+  @include breakpoint(large) {
+    @include flex-grid-column(6);
+  }
+
+  margin: .5em 0;
 
   .icon {
-    margin-right: .6em;
+    @include flex-grid-column(shrink);
+  }
+
+  .text {
+    @include flex-grid-column;
   }
 }
 
 .social {
-  display: flex;
-  justify-content: space-between;
-  margin: .5em 0;
-  width: 100%;
+  margin: .5em 0 0 0;
+
   .icon {
-    display: block;
+    @include flex-grid-column(2);
   }
 }
 
-@media #{$medium-up} {
+@include breakpoint(medium) {
   #main {
-    display: flex;
-    align-items: center;
     bottom: 4em;
-  }
-  header, footer {
-    width: 50%;
   }
   .info {
     width: auto;
   }
 }
 
-@media #{$large-up} {
+@include breakpoint(large) {
   #main {
     bottom: 6em;
-  }
-  header {
-    width: 35%;
-  }
-  footer {
-    width: 65%;
-  }
-  .social {
-    .icon {
-      margin: auto 2em;
-    }
   }
 }
 

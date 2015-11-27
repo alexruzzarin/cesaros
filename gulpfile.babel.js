@@ -26,6 +26,7 @@ const source = {
     base: './src',
     js: ['src/scripts/**/*.js'],
     html: ['src/*.html'],
+    stylesPath: ['node_modules/foundation-sites/scss'],
     styles: ['src/styles/*.scss'],
     images: ['src/images/**/*.*', '!src/images/favicon/**/*.*'],
     staticImages: ['src/images/favicon/**/*.*'],
@@ -57,12 +58,6 @@ gulp.task('html', () => {
         .pipe(onlyif(production, htmlmin({collapseWhitespace: true})))
         .pipe(gulp.dest('dist'))
         .pipe(onlyif(!production, browserSync.reload({stream: true})));
-});
-
-gulp.task('vendor-css', () => {
-    return gulp.src('node_modules/normalize.css/normalize.css')
-        .pipe(rename('_normalize.scss'))
-        .pipe(gulp.dest('./temp'));
 });
 
 gulp.task('icons-svg', () => {
@@ -107,10 +102,12 @@ gulp.task('icons', ['icons-png'], () => {
         .pipe(gulp.dest('./dist/images'));
 });
 
-gulp.task('css', ['vendor-css', 'icons'], () => {
+gulp.task('css', ['icons'], () => {
     return gulp.src(source.styles, {base: source.base})
         .pipe(onlyif(!production, sourcemaps.init()))
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass({
+            includePaths: source.stylesPath
+        }).on('error', sass.logError))
         .pipe(onlyif(production, minifyCss()))
         .pipe(onlyif(!production, sourcemaps.write()))
         .pipe(gulp.dest('dist'))
