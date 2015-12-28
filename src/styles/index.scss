@@ -17,7 +17,7 @@ html {
 
   overflow: hidden;
 
-  @for $i from 1 through 3 {
+  @for $i from 1 through 4 {
     &.bg-#{$i} {
       @include breakpoint(small only) {
         background-image: url('/images/background/bg-0#{$i}-small.jpg');

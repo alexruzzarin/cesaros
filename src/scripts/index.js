@@ -17,7 +17,7 @@ ga('send', 'pageview');
         if(activeClass){
             const activeBg = Number(activeClass[3]);
             let newBg = activeBg + 1;
-            if(newBg > 3) {
+            if(newBg > 4) {
                 newBg = 1;
             }
             const newClass = 'bg-' + newBg;
