@@ -198,7 +198,7 @@ gulp.task('staticFiles', () => {
         .pipe(onlyif(!production, browserSync.reload({stream: true})));
 });
 
-gulp.task('watch', ['default'], ()=> {
+gulp.task('watch', ['default'], () => {
     browserSync.init({
         server: './dist',
     });
@@ -211,4 +211,4 @@ gulp.task('watch', ['default'], ()=> {
     gulp.watch(source.staticFiles, ['staticFiles']);
 });
 
-gulp.task('default', ['pre', 'html', 'js', 'css', 'images', 'staticImages', 'staticFiles']);
+gulp.task('default', ['html', 'js', 'css', 'images', 'staticImages', 'staticFiles']);
