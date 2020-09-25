@@ -1,0 +1,14 @@
+/* purgecss start ignore */
+@tailwind base;
+@tailwind components;
+/* purgecss end ignore */
+@tailwind utilities;
+
+@import url('../styles/font-calligraphillip.css');
+@import url('../styles/font-texgyrepagella.css');
+
+html,
+body,
+#__next {
+  @apply bg-white antialiased font-serif text-gray-900 leading-normal;
+}
