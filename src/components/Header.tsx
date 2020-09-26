@@ -25,19 +25,40 @@ const Header = () => {
   return (
     <>
       <header
-        className={`flex items-center justify-between flex-wrap p-6 fixed top-0 inset-x-0 z-100 transition duration-500 ease-in-out ${!isOnTop || showMenu ? 'bg-white shadow-md' : 'text-white text-shadow-md'
-          }`}
+        className={`flex items-center justify-between flex-wrap p-6 fixed top-0 inset-x-0 z-100 transition duration-500 ease-in-out ${
+          !isOnTop || showMenu
+            ? 'bg-white shadow-md'
+            : 'text-white text-shadow-md'
+        }`}
       >
         <h1>
-          <img className={`block transition-all duration-500 ease-in-out ${isOnTop ? '-my-1 h-24' : '-my-5 h-12'}`} src="/images/logo.png" alt="Césaros Buffet" />
+          <img
+            className={`block transition-all duration-500 ease-in-out ${
+              isOnTop ? '-my-1 h-24' : '-my-5 h-12'
+            }`}
+            src="/images/logo.png"
+            alt="Césaros Buffet"
+          />
         </h1>
         <nav className="hidden md:block">
-          <a className="ml-6" href="#">Localização</a>
-          <a className="ml-6" href="#">Horarios</a>
-          <a className="ml-6" href="#">Eventos</a>
-          <a className="ml-6" href="#">Cardápio</a>
-          <a className="ml-6" href="#">Avaliações</a>
-          <a className="ml-6" href="#">Contato</a>
+          <a className="ml-6" href="#">
+            Localização
+          </a>
+          <a className="ml-6" href="#">
+            Horarios
+          </a>
+          <a className="ml-6" href="#">
+            Eventos
+          </a>
+          <a className="ml-6" href="#">
+            Cardápio
+          </a>
+          <a className="ml-6" href="#">
+            Avaliações
+          </a>
+          <a className="ml-6" href="#">
+            Contato
+          </a>
         </nav>
         <button
           type="button"
@@ -59,7 +80,11 @@ const Header = () => {
           </svg>
         </button>
       </header>
-      <nav className={`${showMenu ? 'block' : 'hidden'} md:hidden fixed top-0 inset-x-0 z-100 mt-24 bg-white`}>
+      <nav
+        className={`${
+          showMenu ? 'block' : 'hidden'
+        } md:hidden fixed top-0 inset-x-0 z-100 mt-24 bg-white`}
+      >
         <a href="#">Localização</a>
         <a href="#">Horarios</a>
         <a href="#">Eventos</a>
