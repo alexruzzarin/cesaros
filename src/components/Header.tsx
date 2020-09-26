@@ -25,20 +25,19 @@ const Header = () => {
   return (
     <>
       <header
-        className={`flex items-center justify-between flex-wrap p-6 fixed top-0 inset-x-0 z-100 transition duration-500 ease-in-out ${
-          !isOnTop || showMenu ? 'bg-white' : 'text-white'
-        }`}
+        className={`flex items-center justify-between flex-wrap p-6 fixed top-0 inset-x-0 z-100 transition duration-500 ease-in-out ${!isOnTop || showMenu ? 'bg-white shadow-md' : 'text-white text-shadow-md'
+          }`}
       >
         <h1>
-          <img className="h-6 block" src="/images/logo.png" alt="Césaros Buffet" />
+          <img className={`block transition-all duration-500 ease-in-out ${isOnTop ? '-my-1 h-24' : '-my-5 h-12'}`} src="/images/logo.png" alt="Césaros Buffet" />
         </h1>
         <nav className="hidden md:block">
-          <a href="#">Localização</a>
-          <a href="#">Horarios</a>
-          <a href="#">Eventos</a>
-          <a href="#">Cardápio</a>
-          <a href="#">Avaliações</a>
-          <a href="#">Contato</a>
+          <a className="ml-6" href="#">Localização</a>
+          <a className="ml-6" href="#">Horarios</a>
+          <a className="ml-6" href="#">Eventos</a>
+          <a className="ml-6" href="#">Cardápio</a>
+          <a className="ml-6" href="#">Avaliações</a>
+          <a className="ml-6" href="#">Contato</a>
         </nav>
         <button
           type="button"
